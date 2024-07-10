@@ -31,15 +31,24 @@ def clear_and_create_directory(directory):
     os.makedirs(directory)
 
 
-def compare_and_copy_files(new_files, old_files, add_dir, delete_dir):
+def compare_and_copy_files(new_files, old_files, new_prefix, add_dir_all, add_dir, delete_dir):
     """比较文件并复制到相应的目录"""
     # 清空或创建目标目录
+    clear_and_create_directory(add_dir_all)
     clear_and_create_directory(add_dir)
     clear_and_create_directory(delete_dir)
 
     # folder_new 有但是 folder_old 没有的文件
     for checksum, file_path in new_files.items():
         if checksum not in old_files:
+            dst_file_path_all = os.path.join(add_dir_all, os.path.relpath(file_path, new_prefix))
+            # 确保目标目录存在
+            dst_dir_all = os.path.dirname(dst_file_path_all)
+            if not os.path.exists(dst_dir_all):
+                os.makedirs(dst_dir_all)
+            shutil.copy2(file_path, dst_file_path_all)
+            print(f"Copied to addLibAll: {file_path}")
+
             dst_file_path = os.path.join(add_dir, os.path.basename(file_path))
             shutil.copy2(file_path, dst_file_path)
             print(f"Copied to addLib: {file_path}")
@@ -54,8 +63,11 @@ def compare_and_copy_files(new_files, old_files, add_dir, delete_dir):
 
 if __name__ == '__main__':
     # 使用示例
-    folder_new = 'C:\\Users\\lizhaopeng\\.gradle\\caches\\modules-2\\files-2.1'  # 将此路径替换为你的新文件夹路径
+    # C:\Users\lizhaopeng\.gradle2.x\caches\modules-2\files-2.1
+    folder_new = 'C:\\Users\\lizhaopeng\\.gradle2.x\\caches\\modules-2\\files-2.1'  # 将此路径替换为你的新文件夹路径
+    # C:\Lzp\Project\Yostar\AiriSDK\yostar_sdk_unity\UnityMainLine\UnityProject\AiriSDK\Assets\Plugins\Android\libs
     folder_old = 'C:\\Lzp\\Project\\Yostar\\AiriSDK\\yostar_sdk_unity\\UnityMainLine\\UnityProject\\AiriSDK\\Assets\\Plugins\\Android\\libs'  # 将此路径替换为你的旧文件夹路径
+    add_directory_all = './addLibAll'  # folder_new 有但是 folder_old 没有的文件复制到这里(包含文件夹)
     add_directory = './addLib'  # folder_new 有但是 folder_old 没有的文件复制到这里
     delete_directory = './deleteLib'  # folder_old 有但是 folder_new 没有的文件复制到这里
     file_suffixes = ['.jar', '.aar']  # 文件后缀列表
@@ -66,4 +78,4 @@ if __name__ == '__main__':
     old_files = find_files(folder_old, file_suffixes, excluded_keywords)
 
     # 比较并复制文件
-    compare_and_copy_files(new_files, old_files, add_directory, delete_directory)
+    compare_and_copy_files(new_files, old_files, folder_new, add_directory_all, add_directory, delete_directory)
