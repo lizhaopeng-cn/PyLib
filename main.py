@@ -19,7 +19,6 @@ common_files = ['alml.jar',
                 'iap_plugin_v17.02.00_20181012.jar',
                 'in-app-purchasing-2.0.76.jar',
                 'login-with-amazon-sdk.jar',
-                'multidex-1.0.3.aar',
                 'play-services-games-v2-16.0.1-eap.aar',
                 'SdkHttpClient.aar',
                 'twitter_android_core.aar']
