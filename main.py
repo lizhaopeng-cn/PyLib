@@ -14,14 +14,12 @@ add_dir = './addLib'  # folder_new 有但是 folder_old 没有的文件复制到
 delete_dir = './deleteLib'  # folder_old 有但是 folder_new 没有的文件复制到这里
 common_dir = './commonLib'  # 本地项目或三方本地文件
 common_files = ['alml.jar',
-                'geetest_captcha_android_v1.8.2_20230504.aar',
-                'IAP6Helper.aar',
+                'IAP6Helper-release.aar',
                 'iap_plugin_v17.02.00_20181012.jar',
                 'in-app-purchasing-2.0.76.jar',
                 'login-with-amazon-sdk.jar',
-                'play-services-games-v2-16.0.1-eap.aar',
-                'SdkHttpClient.aar',
-                'twitter_android_core.aar']
+                'SdkHttpClient-release.aar',
+                'twitter_android_core-release.aar']
 
 
 def file_checksum(file_path):
