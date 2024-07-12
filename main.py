@@ -20,6 +20,77 @@ common_files = ['alml.jar',
                 'login-with-amazon-sdk.jar',
                 'SdkHttpClient-release.aar',
                 'twitter_android_core-release.aar']
+excluded_dir = [
+    'androidx.databinding',
+    'androidx.test',
+    'androidx.tracing',
+    'backport-util-concurrent',
+    'classworlds',
+    'com.android',
+    'com.android.databinding',
+    'com.android.tools',
+    'com.github.gundy',
+    'com.google.android',
+    'com.google.api.grpc',
+    'com.google.auto.value',
+    'com.google.crypto.tint',
+    'com.google.dagger',
+    'com.google.flatbuffers',
+    'com.google.jimfs',
+    'com.google.protobuf',
+    'com.google.testing.platform',
+    'com.googlecode.juniversalchardet',
+    'com.jfrog.bintray.gradle',
+    'com.novoda',
+    'com.squareup.javapoet',
+    'com.sun.activation',
+    'com.sun.istack',
+    'com.sun.xml.fastinfoset',
+    'commons-beanutils',
+    'commons-codec',
+    'commons-collections',
+    'commons-io',
+    'commons-lang',
+    'commons-logging',
+    'de.undercouch',
+    'io.grpc',
+    'io.netty',
+    'io.perfmark',
+    'jakarta.activation',
+    'jakarta.xml.bind',
+    'javax.annotation',
+    'org.jetbrains\\annotations',
+    'org.jetbrains.intellij.deps',
+    'org.jetbrains.kotlin\\kotlin-android-extensions',
+    'org.jetbrains.kotlin\\kotlin-annotation-processing-gradle',
+    'org.jetbrains.kotlin\\kotlin-build-common',
+    'org.jetbrains.kotlin\\kotlin-compiler-embeddable',
+    'org.jetbrains.kotlin\\kotlin-compiler-runner',
+    'org.jetbrains.kotlin\\kotlin-daemon-client',
+    'org.jetbrains.kotlin\\kotlin-daemon-embeddable',
+    'org.jetbrains.kotlin\\kotlin-gradle-plugin',
+    'org.jetbrains.kotlin\\kotlin-gradle-plugin-api',
+    'org.jetbrains.kotlin\\kotlin-gradle-plugin-model',
+    'org.jetbrains.kotlin\\kotlin-klib-commonizer-api',
+    'org.jetbrains.kotlin\\kotlin-native-utils',
+    'org.jetbrains.kotlin\\kotlin-project-model',
+    'org.jetbrains.kotlin\\kotlin-reflect',
+    'org.jetbrains.kotlin\\kotlin-scripting-common',
+    'org.jetbrains.kotlin\\kotlin-scripting-compiler-embeddable',
+    'org.jetbrains.kotlin\\kotlin-scripting-compiler-impl-embeddable',
+    'org.jetbrains.kotlin\\kotlin-scripting-jvm',
+    'org.jetbrains.kotlin\\kotlin-tooling-metadata',
+    'org.jetbrains.kotlin\\kotlin-util-io',
+    'org.jetbrains.kotlin\\kotlin-util-klib',
+    'org.json',
+    'org.jvnet.staxex',
+    'org.ow2.asm',
+    'org.slf4j',
+    'org.tensorflow',
+    'xerces',
+    'xml-apis',
+    'xml-resolver'
+]
 
 
 def file_checksum(file_path):
@@ -58,9 +129,9 @@ def compare_and_copy_files(new_files, old_files):
     clear_and_create_directory(delete_dir)
     clear_and_create_directory(common_dir)
 
-    # folder_new 有但是 folder_old 没有的文件
+    # folder_new 有但是 folder_old 没有的文件，并且排除指定文件夹
     for checksum, file_path in new_files.items():
-        if checksum not in old_files:
+        if checksum not in old_files and not any(item in file_path for item in excluded_dir):
             # addLibAll
             dst_file_path_all = os.path.join(add_dir_all, os.path.relpath(file_path, folder_new))
             dst_dir_all = os.path.dirname(dst_file_path_all)
